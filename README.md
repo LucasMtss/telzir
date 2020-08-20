@@ -1,9 +1,9 @@
 ## TelZir
     A aplicação foi feita utilizando HTML, CSS, Javascript e React.js apenas.
-    A mesma tem como finalidade informar o custo de uma ligação com e sem os planos Fale Mais, bem como o valor que o cliente vai economizar com o plano. O calculo é feito com base nas informações inseridas pelo usuário nos campos demarcados, com DDD de origem, DDD de destino, duração da chamada e o plano que o cliente possui.
+    A mesma tem como finalidade informar o custo de uma ligação com e sem os planos Fale Mais, bem como o valor que o cliente vai economizar com o plano. O calculo é feito com base nas informações inseridas pelo usuário nos campos demarcados, como DDD de origem, DDD de destino, duração da chamada e o plano que o cliente possui.
 
 ## Validação dos valores nos inputs
-    O cálculo da tarifa segundo os DDDs de origem e destino tem como base a tabela, tirada do PDF do desafio
+    O cálculo da tarifa segundo os DDDs de origem e destino tem como base a tabela, retirada do PDF do desafio
     
     Origem      Destino     $/min
      011          016        1.90
@@ -13,7 +13,7 @@
      011          018        0.90
      018          011        1.90 
 
-    Segundo a tabela, se o DDD de origem for 011, o DDD de destino podem ser 016, 017 e 018.
+    Segundo a tabela, se o DDD de origem for 011, o DDD de destino pode ser 016, 017 e 018.
     Se o DDD de origem for 016, 017 ou 018, o DDD de destino só poderá ser 011
 
     Os planos ofertados para os clientes são: Fale Mais 30, Fale Mais 60 e Fale Mais 120.
