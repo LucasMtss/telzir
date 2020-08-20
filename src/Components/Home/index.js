@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import Table from '../Table'
+import './Home.css'
+
 
 function Home() {
-    const [minutos, setMinutos] = useState('');
-    const [dddOrigem, setDddOrigem] = useState('')
-    const [dddDestino, setDddDestino] = useState('')
-    const [plano, setPlano] = useState('')
-    const [tarifa, setTarifa] = useState()
+
     const [ligacao, setLigacao] = useState({})
-    const [selectValues, setSelectValues] = useState(['011', '016', '017', '018'])
+    const [selectValues, setSelectValues] = useState(['016', '017', '018'])
 
     function calculaValores() {
         let tempoMinutos = document.getElementById('minutos').value
@@ -40,16 +37,8 @@ function Home() {
         if (tempoMinutos === '')
             tempoMinutos = '0'
 
-        console.log('minutos: ', tempoMinutos)
-        console.log('DDD origem: ', valorDddOrigem)
-        console.log('DDD destino: ', valorDddDestino)
-        console.log('plano: ', valorPlano)
 
 
-        setMinutos(tempoMinutos)
-        setDddOrigem(valorDddOrigem)
-        setDddDestino(valorDddDestino)
-        setPlano(valorPlano)
         var valorTarifa = calculaValorTarifa(valorDddOrigem, valorDddDestino)
         calculaValorLigacao(tempoMinutos, valorTarifa, valorPlano)
     }
@@ -59,7 +48,6 @@ function Home() {
 
     function calculaValorTarifa(dddOrigem, dddDestino) {
         var valorTarifa
-        console.log('entrou', dddOrigem, dddDestino)
         switch (dddOrigem) {
             case '011':
                 if (dddDestino === '016')
@@ -68,6 +56,8 @@ function Home() {
                     valorTarifa = 1.70
                 else if (dddDestino === '018')
                     valorTarifa = 0.90
+                else if (dddDestino === '011')
+                    valorTarifa = 1
                 break;
             case '016':
                 valorTarifa = 2.90
@@ -78,9 +68,11 @@ function Home() {
             case '018':
                 valorTarifa = 1.90
                 break;
+            default:
+                valorTarifa = 1
+                break;
         }
-        console.log('tarifa da funcao: ', valorTarifa)
-        //setTarifa(valorTarifa)
+
         return valorTarifa
     }
 
@@ -89,25 +81,23 @@ function Home() {
         var valorPlano = parseFloat(plano)
         var valorLigacao = {
             comPlano: 0.00,
-            semPlano: 0.00
+            semPlano: 0.00,
+            economia: 0.00
         }
-        console.log('minutos: ', valorMinutos)
-        console.log('tarifa: ', tarifa)
-        console.log('plano: ', parseFloat(plano))
+
         if (plano === 'nenhum') {
             valorLigacao.comPlano = (valorMinutos * tarifa).toFixed(2)
             valorLigacao.semPlano = (valorMinutos * tarifa).toFixed(2)
         }
         else {
-            valorLigacao.semPlano = valorMinutos * tarifa
+            valorLigacao.semPlano = (valorMinutos * tarifa).toFixed(2)
             if (valorMinutos <= valorPlano)
                 valorLigacao.comPlano = 0.00
             else
                 valorLigacao.comPlano = ((valorMinutos - valorPlano) * (tarifa * 1.1)).toFixed(2)
         }
 
-        console.log('com plano: ', valorLigacao.comPlano)
-        console.log('sem plano: ', valorLigacao.semPlano)
+        valorLigacao.economia = (valorLigacao.semPlano - valorLigacao.comPlano).toFixed(2)
 
         setLigacao(valorLigacao)
     }
@@ -123,55 +113,67 @@ function Home() {
         if (selected !== '011')
             setSelectValues(['011'])
         else
-            setSelectValues(['011', '016', '017', '018'])
+            setSelectValues(['016', '017', '018'])
         console.log(selectValues)
     }
 
 
     return (
         <>
+
+            <p className='texto'>Aqui você pode calcular o valor das suas ligações e descobrir o quanto vai economizar com nossos planos.</p>
             <div className='selectionContainer'>
-                <label>Informe o seu DDD</label>
-                <select className='dddOrigem' onChange={valueSelectChange}>
-                    <option name='dddO' value='011' selected>011</option>
-                    <option name='dddO' value='016'>016</option>
-                    <option name='dddO' value='017'>017</option>
-                    <option name='dddO' value='018'>018</option>
-                </select>
+                <div className='containerDDDorigem' >
+                    <label className='labelDDDOrigem'>Informe o seu DDD</label>
+                    <select className='dddOrigem' onChange={valueSelectChange}>
+                        <option name='dddO' value='011' selected>011</option>
+                        <option name='dddO' value='016'>016</option>
+                        <option name='dddO' value='017'>017</option>
+                        <option name='dddO' value='018'>018</option>
+                    </select>
+                </div>
                 <br />
-                <label>Informe o DDD que você deseeja ligar</label>
-                <select className='dddDestino' >
-                    {selectValues.map((value) => {
-                        return (<option name='dddD' value={value}>{value}</option>)
-                    })}
-                </select>
+                <div className='containerDDDdestino'>
+                    <label className='labelDDDDestino'>Informe o DDD que você deseja ligar</label>
+                    <select className='dddDestino' >
+                        {selectValues.map((value) => {
+                            return (<option name='dddD' value={value}>{value}</option>)
+                        })}
+                    </select>
+                </div>
                 <br />
-
-                <label>Informe seu plano</label>
-                <select className='plano'>
-                    <option name='plano' value='30.0' selected>Fale Mais 30</option>
-                    <option name='plano' value='60.0' >Fale Mais 60</option>
-                    <option name='plano' value='120.0' >Fale Mais 120</option>
-                    <option name='plano' value='nenhum'>Não tenho plano</option>
-
-                </select>
+                <div className='containerPlano'>
+                    <label className='labelPlano'>Selecione seu plano</label>
+                    <select className='plano'>
+                        <option name='plano' value='30.0' selected>Fale Mais 30</option>
+                        <option name='plano' value='60.0' >Fale Mais 60</option>
+                        <option name='plano' value='120.0' >Fale Mais 120</option>
+                        <option name='plano' value='nenhum'>Não tenho plano</option>
+                    </select>
+                </div>
                 <br />
-
-                <label>Informe a duração da chamada em minutos</label>
-                <input placeholder='ex: 30' type='number' id='minutos' />
-                <button onClick={calculaValores}>Calcular</button>
+                <div className='containerMinutos'>
+                    <label>Informe a duração da chamada em minutos</label>
+                    <input placeholder='ex: 30' type='number' id='minutos' />
+                </div>
+                <button className='botaoCalcular' onClick={calculaValores}>Calcular</button>
             </div>
-            {/* <Table minutos={minutos} dddOrigem={dddOrigem} dddDestino={dddDestino} plano={plano} /> */}
             <div className='resultados'>
                 <table>
-                    <tr>
-                        <th>Com Fale Mais</th>
-                        <th>Sem Fale Mais</th>
-                    </tr>
-                    <tr>
-                        <td>R${ligacao.comPlano}</td>
-                        <td>R${ligacao.semPlano}</td>
-                    </tr>
+                    <thead>
+                        <tr className='titulos'>
+                            <th>Com Fale Mais</th>
+                            <th>Sem Fale Mais</th>
+                            <th>Você economiza</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr className='linhas'>
+                            <td>R${ligacao.comPlano}</td>
+                            <td>R${ligacao.semPlano}</td>
+                            <td>R${ligacao.economia}</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </>

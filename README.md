@@ -1,68 +1,32 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## TelZir
+    A aplicação foi feita utilizando HTML, CSS, Javascript e React.js apenas.
+    A mesma tem como finalidade informar o custo de uma ligação com e sem os planos Fale Mais, bem como o valor que o cliente vai economizar com o plano. O calculo é feito com base nas informações inseridas pelo usuário nos campos demarcados, com DDD de origem, DDD de destino, duração da chamada e o plano que o cliente possui.
 
-## Available Scripts
+## Validação dos valores nos inputs
+    O cálculo da tarifa segundo os DDDs de origem e destino tem como base a tabela, tirada do PDF do desafio
+    
+    Origem      Destino     $/min
+     011          016        1.90
+     016          011        2.90
+     011          017        1.70
+     017          011        2.70
+     011          018        0.90
+     018          011        1.90 
 
-In the project directory, you can run:
+    Segundo a tabela, se o DDD de origem for 011, o DDD de destino podem ser 016, 017 e 018.
+    Se o DDD de origem for 016, 017 ou 018, o DDD de destino só poderá ser 011
 
-### `npm start`
+    Os planos ofertados para os clientes são: Fale Mais 30, Fale Mais 60 e Fale Mais 120.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Testes com valores esperados
+    O site por sí só já não permite ao usuário inserir tipos incorretos de dados nos inputs.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+    Alguns testes podem ser feitos utilizando os valores indicados e a resposta deverá ser a mesma presente na tabela:
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+    Origem      Destino      Plano      Tempo      Com Fale Mais      Sem Fale Mais      Economia
+      011         016     FaleMais 30     20          R$ 0,00             R$ 38,00       R$ 38,00
+      011         017     FaleMais 60     80          R$ 37,40            R$ 136,00      R$ 98,60
+      018         011     FaleMais 120    220         R$ 167,20           R$ 380,00      R$ 212,80
+      011         016     FaleMais 30     30          R$ 0,00             R$ 57,00       R$ 57,00 
+      016         011     FaleMais 120    0           R$ 0,00             R$ 0,00        R$ 0,00
+      018         011   Não tenho plano   37          R$ 51,30            R$ 51,30       R$ 0,00
